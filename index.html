@@ -1,228 +1,407 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>优购商城 - 一站式购物体验</title>
-		<link rel="stylesheet" href="./css/maihua.css">
-		<link rel="stylesheet" href="" />
-		<style></style>
-	</head>
-	<body>
-		<!-- 头部导航 -->
-		<header>
-			<div class="container header-content">
-				<div class="logo">
-					<i class="fas fa-shopping-bag"></i>
-					<span>优购商城</span>
-				</div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>整齐布局的静态网页</title>
+    <style>
+        /* 基础样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-				<nav>
-					<ul>
-						<li><a href="#" class="nav-link active" data-page="home">首页</a></li>
-						<li><a href="#" class="nav-link" data-page="products">商品</a></li>
-						<li><a href="#" class="nav-link" data-page="cart">购物车</a></li>
-						<li><a href="#" class="nav-link" data-page="about">关于我们</a></li>
-					</ul>
-				</nav>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #6b8cbc;
+            --accent-color: #ff7e5f;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --text-color: #333;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
 
-				<div class="user-section">
-					<div class="user-info logged-out">
-						<i class="fas fa-user"></i>
-						<span>您好，请 <a href="#" id="login-link">登录</a></span>
-					</div>
-					<div class="cart-icon">
-						<i class="fas fa-shopping-cart"></i>
-						<span class="cart-count">0</span>
-					</div>
-				</div>
-			</div>
-		</header>
+        body {
+            background-color: #f5f5f5;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
 
-		<div class="container">
-			<!-- 登录页面 -->
-			<div id="login-page" class="page active">
-				<div class="login-container">
-					<h2>欢迎登录优购商城</h2>
-					<div class="form-group">
-						<label for="username">用户名</label>
-						<input type="text" id="username" class="form-control" placeholder="请输入用户名">
-						<div class="error" id="username-error">请输入用户名</div>
-					</div>
-					<div class="form-group">
-						<label for="password">密码</label>
-						<input type="password" id="password" class="form-control" placeholder="请输入密码">
-						<div class="error" id="password-error">请输入密码</div>
-					</div>
-					<button id="login-btn" class="btn">登 录</button>
-					<p style="text-align: center; margin-top: 20px;">
-						还没有账号？<a href="#" id="register-link">立即注册</a>
-					</p>
-				</div>
-			</div>
+        /* 布局容器 */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
 
-			<!-- 商品页面 -->
-			<div id="products-page" class="page">
-				<h2 class="section-title">热门商品</h2>
-				<div class="products-grid">
-					<!-- 商品卡片将通过JS动态生成 -->
-				</div>
-			</div>
+        /* 头部样式 */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-			<!-- 商品详情页 -->
-			<div id="detail-page" class="page">
-				<button class="btn btn-back" id="back-to-products">返回商品列表</button>
-				<div class="details-container">
-					<div class="product-gallery">
-						<div class="main-image">
-							<img id="main-img" src="" alt="商品主图">
-						</div>
-						<div class="thumbnails">
-							<!-- 缩略图将通过JS动态生成 -->
-						</div>
-					</div>
-					<div class="product-details">
-						<h1 class="detail-title" id="detail-title">商品名称</h1>
-						<div class="product-rating">
-							<i class="fas fa-star"></i>
-							<i class="fas fa-star"></i>
-							<i class="fas fa-star"></i>
-							<i class="fas fa-star"></i>
-							<i class="fas fa-star-half-alt"></i>
-							<span>(128 条评价)</span>
-						</div>
-						<div class="detail-price" id="detail-price">¥0.00</div>
-						<div class="detail-description" id="detail-description">
-							商品描述加载中...
-						</div>
-						<div class="detail-actions">
-							<div class="quantity-selector">
-								<button class="quantity-btn" id="decrease">-</button>
-								<input type="number" class="quantity-input" id="quantity" value="1" min="1">
-								<button class="quantity-btn" id="increase">+</button>
-							</div>
-							<button class="btn btn-add-to-cart" id="add-to-cart-detail">加入购物车</button>
-						</div>
-					</div>
-				</div>
-			</div>
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-			<!-- 购物车页面 -->
-			<div id="cart-page" class="page">
-				<h2 class="section-title">购物车</h2>
-				<div class="cart-container">
-					<div class="cart-header">
-						<h3 class="cart-title">我的购物车</h3>
-						<span id="cart-count">0 件商品</span>
-					</div>
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
 
-					<table class="cart-table">
-						<thead>
-							<tr>
-								<th>商品</th>
-								<th>单价</th>
-								<th>数量</th>
-								<th>小计</th>
-							</tr>
-						</thead>
-						<tbody id="cart-items">
-							<!-- 购物车商品将通过JS动态生成 -->
-						</tbody>
-					</table>
+        .logo span {
+            color: var(--accent-color);
+        }
 
-					<div class="cart-summary">
-						<div class="summary-row">
-							<span>商品总计</span>
-							<span id="subtotal">¥0.00</span>
-						</div>
-						<div class="summary-row">
-							<span>运费</span>
-							<span>¥0.00</span>
-						</div>
-						<div class="summary-row total">
-							<span>应付总额</span>
-							<span id="total">¥0.00</span>
-						</div>
-						<button class="btn btn-checkout">去结算</button>
-					</div>
-				</div>
-			</div>
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
 
-			<!-- 关于我们页面 -->
-			<div id="about-page" class="page">
-				<h2 class="section-title">关于我们</h2>
-				<div
-					style="background: white; padding: 30px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
-					<p style="margin-bottom: 20px; line-height: 1.8;">
-						优购商城成立于2010年，是国内领先的电子商务平台之一。我们致力于为消费者提供优质的商品和便捷的购物体验。
-					</p>
-					<p style="margin-bottom: 20px; line-height: 1.8;">
-						我们的使命是让每个人都能享受到科技带来的美好生活。经过多年的发展，优购商城已经成为涵盖数码电子、家居生活、服饰美妆、食品生鲜等全品类的综合性电商平台。
-					</p>
-					<h3 style="margin: 25px 0 15px; color: var(--primary);">我们的优势</h3>
-					<ul style="margin-left: 30px; margin-bottom: 25px;">
-						<li style="margin-bottom: 10px;">正品保证：所有商品均从品牌官方或授权经销商采购</li>
-						<li style="margin-bottom: 10px;">价格优势：直接对接供应商，省去中间环节</li>
-						<li style="margin-bottom: 10px;">快速配送：全国2000+城市次日达</li>
-						<li style="margin-bottom: 10px;">无忧售后：7天无理由退换货</li>
-					</ul>
-					<h3 style="margin: 25px 0 15px; color: var(--primary);">联系我们</h3>
-					<p style="margin-bottom: 10px;"><i class="fas fa-phone" style="margin-right: 10px;"></i>
-						客服热线：400-888-8888</p>
-					<p style="margin-bottom: 10px;"><i class="fas fa-envelope" style="margin-right: 10px;"></i>
-						邮箱：service@yougou.com</p>
-					<p style="margin-bottom: 10px;"><i class="fas fa-map-marker-alt" style="margin-right: 10px;"></i>
-						地址：北京市朝阳区科技园区88号优购大厦</p>
-				</div>
-			</div>
-		</div>
+        nav ul li {
+            margin-left: 1.5rem;
+        }
 
-		<!-- 页脚 -->
-		<footer>
-			<div class="container">
-				<div class="footer-content">
-					<div class="footer-column">
-						<h3>购物指南</h3>
-						<ul class="footer-links">
-							<li><a href="#">购物流程</a></li>
-							<li><a href="#">会员介绍</a></li>
-							<li><a href="#">常见问题</a></li>
-							<li><a href="#">联系客服</a></li>
-						</ul>
-					</div>
-					<div class="footer-column">
-						<h3>配送方式</h3>
-						<ul class="footer-links">
-							<li><a href="#">上门自提</a></li>
-							<li><a href="#">211限时达</a></li>
-							<li><a href="#">配送服务查询</a></li>
-							<li><a href="#">配送费收取标准</a></li>
-						</ul>
-					</div>
-					<div class="footer-column">
-						<h3>支付方式</h3>
-						<ul class="footer-links">
-							<li><a href="#">货到付款</a></li>
-							<li><a href="#">在线支付</a></li>
-							<li><a href="#">分期付款</a></li>
-							<li><a href="#">公司转账</a></li>
-						</ul>
-					</div>
-					<div class="footer-column">
-						<h3>关注我们</h3>
-						<ul class="footer-links">
-							<li><a href="#"><i class="fab fa-weixin"></i> 微信公众号</a></li>
-							<li><a href="#"><i class="fab fa-weibo"></i> 新浪微博</a></li>
-							<li><a href="#"><i class="fab fa-tiktok"></i> 抖音</a></li>
-							<li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="copyright">
-					&copy; 2023 优购商城 版权所有 | 隐私政策 | 使用条款
-				</div>
-			</div>
-		</footer>
-		<script src="js/new_file.js"></script>
-	</body>
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 0.5rem 0.8rem;
+            border-radius: var(--border-radius);
+        }
+
+        nav ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* 主要内容区 */
+        main {
+            padding: 2rem 0;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: bold;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #ff6b4a;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 卡片区域 */
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--accent-color);
+            margin: 0.5rem auto;
+            border-radius: 2px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-img {
+            height: 200px;
+            background-color: var(--secondary-color);
+            background-size: cover;
+            background-position: center;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card h3 {
+            margin-bottom: 0.8rem;
+            color: var(--primary-color);
+        }
+
+        .card p {
+            margin-bottom: 1rem;
+            color: #666;
+        }
+
+        /* 特色区域 */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .feature:hover {
+            transform: translateY(-3px);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        /* 页脚样式 */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: #ddd;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-section a:hover {
+            color: var(--accent-color);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 0.5rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">网页<span>设计</span></div>
+            <nav>
+                <ul>
+                    <li><a href="#">首页</a></li>
+                    <li><a href="#">关于我们</a></li>
+                    <li><a href="#">服务项目</a></li>
+                    <li><a href="#">作品展示</a></li>
+                    <li><a href="#">联系我们</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <section class="hero">
+                <h1>欢迎来到我们的网站</h1>
+                <p>我们提供专业的网页设计和开发服务，帮助您打造出色的在线体验。</p>
+                <a href="#" class="btn">了解更多</a>
+            </section>
+
+            <section>
+                <h2 class="section-title">我们的服务</h2>
+                <div class="cards">
+                    <div class="card">
+                        <div class="card-img" style="background-color: #4a6fa5;"></div>
+                        <div class="card-content">
+                            <h3>网页设计</h3>
+                            <p>我们创建美观、响应式的网站设计，确保在各种设备上都有出色的用户体验。</p>
+                            <a href="#" class="btn">查看详情</a>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-img" style="background-color: #6b8cbc;"></div>
+                        <div class="card-content">
+                            <h3>前端开发</h3>
+                            <p>使用最新的前端技术，将设计转化为功能完整、性能优异的网站。</p>
+                            <a href="#" class="btn">查看详情</a>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-img" style="background-color: #ff7e5f;"></div>
+                        <div class="card-content">
+                            <h3>用户体验优化</h3>
+                            <p>通过用户研究和测试，优化网站流程和交互，提高用户满意度和转化率。</p>
+                            <a href="#" class="btn">查看详情</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2 class="section-title">我们的特色</h2>
+                <div class="features">
+                    <div class="feature">
+                        <div class="feature-icon">🚀</div>
+                        <h3>快速交付</h3>
+                        <p>我们采用高效的工作流程，确保项目按时交付。</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">💡</div>
+                        <h3>创新设计</h3>
+                        <p>我们不断探索新的设计趋势和技术，为客户提供前沿解决方案。</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">🔒</div>
+                        <h3>安全可靠</h3>
+                        <p>我们重视代码质量和安全性，确保网站稳定运行。</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">📱</div>
+                        <h3>响应式设计</h3>
+                        <p>所有网站都采用响应式设计，在各种设备上都能完美展示。</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>关于我们</h3>
+                    <p>我们是一家专业的网页设计公司，致力于为客户提供高质量的网站解决方案。</p>
+                </div>
+                <div class="footer-section">
+                    <h3>快速链接</h3>
+                    <ul>
+                        <li><a href="#">首页</a></li>
+                        <li><a href="#">关于我们</a></li>
+                        <li><a href="#">服务项目</a></li>
+                        <li><a href="#">作品展示</a></li>
+                        <li><a href="#">联系我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>联系方式</h3>
+                    <ul>
+                        <li>电话: 123-456-7890</li>
+                        <li>邮箱: info@example.com</li>
+                        <li>地址: 北京市朝阳区xxx街道123号</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 网页设计公司. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+</body>
 </html>
